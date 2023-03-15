@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Controle de Vendas"
-include ':app'
+include(":app", ":data")
