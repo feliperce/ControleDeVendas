@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = Config.namespace
+    namespace = Config.getNameSpaceByModuleName("data")
     compileSdk = Config.compileSdk
 
     defaultConfig {

@@ -1,4 +1,4 @@
-package br.com.teste.controledevendas.ui.theme
+package br.com.teste.controledevendas.design.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

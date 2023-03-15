@@ -1,4 +1,4 @@
-package br.com.teste.controledevendas.ui.theme
+package br.com.teste.controledevendas.design.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle

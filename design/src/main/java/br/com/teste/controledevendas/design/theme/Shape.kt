@@ -1,4 +1,4 @@
-package br.com.teste.controledevendas.ui.theme
+package br.com.teste.controledevendas.design.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes
