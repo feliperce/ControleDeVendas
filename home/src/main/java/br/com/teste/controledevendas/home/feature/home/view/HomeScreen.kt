@@ -8,32 +8,87 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Add
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import br.com.teste.controledevendas.data.handler.ErrorType
 import br.com.teste.controledevendas.data.local.entity.OrderEntity
+import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
+import br.com.teste.controledevendas.data.local.entity.ProductEntity
 import br.com.teste.controledevendas.design.component.DefaultAppBar
 import br.com.teste.controledevendas.design.theme.MarginPaddingSizeMedium
 import br.com.teste.controledevendas.design.theme.TextSizeMicro
 import br.com.teste.controledevendas.home.R
+import br.com.teste.controledevendas.home.feature.home.state.HomeIntent
+import br.com.teste.controledevendas.home.feature.home.viewmodel.HomeViewModel
+import org.koin.androidx.compose.getViewModel
 import java.util.*
+
+@Composable
+fun HomeScreen(
+    homeViewModel: HomeViewModel = getViewModel()
+) {
+
+    val scaffoldState = rememberScaffoldState()
+    val homeUiState by homeViewModel.homeState.collectAsState()
+
+    homeViewModel.sendIntent(HomeIntent.GetAllOrdersWithProducts)
+
+    homeUiState.error.let { error ->
+        if (error != ErrorType.NONE) {
+            val errorMsg = stringResource(id = R.string.home_error_generic)
+
+            LaunchedEffect(Unit) {
+                scaffoldState.snackbarHostState.showSnackbar(message = errorMsg)
+                homeUiState.error = ErrorType.NONE
+            }
+        }
+    }
+
+    OrderContent(
+        onOrderItemClick = {
+
+        },
+        onAddOrderClick = {
+
+        },
+        orderList = homeUiState.orderWithProductsList,
+        showProgress = homeUiState.loading
+    )
+
+}
 
 @Composable
 fun OrderContent(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     onOrderItemClick: (order: OrderEntity) -> Unit,
+    showProgress: Boolean,
     onAddOrderClick: () -> Unit,
-    orderList: List<OrderEntity>
+    orderList: List<OrderWithProducts>
 ) {
 
     Scaffold(
         scaffoldState = scaffoldState,
         topBar = {
-            DefaultAppBar(title = stringResource(id = R.string.screen_title))
+            DefaultAppBar(
+                title = stringResource(id = R.string.screen_title),
+                subTitle = stringResource(id = R.string.screen_subtitle, 5.0)
+            )
         },
         content = {
+            if (showProgress) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
             Column() {
                 OrderItemList(
                     orderList = orderList,
@@ -59,12 +114,12 @@ fun OrderContent(
 
 @Composable
 fun OrderItemList(
-    orderList: List<OrderEntity>,
+    orderList: List<OrderWithProducts>,
     onOrderItemClick: (order: OrderEntity) -> Unit
 ) {
     LazyColumn() {
         items(orderList) {
-            OrderItem(order = it, onOrderItemClick = onOrderItemClick)
+            OrderItem(order = it.order, onOrderItemClick = onOrderItemClick)
             Divider(color = Color.Black, thickness = 1.dp)
         }
     }
@@ -96,13 +151,13 @@ fun OrderItem(
 @Composable
 @Preview(showBackground = true)
 fun OrderItemPreview() {
-    OrderItem(order = fakeOrderList[1], onOrderItemClick = {})
+    OrderItem(order = fakeOrderList[1]) {}
 }
 
 @Composable
 @Preview(showBackground = true)
 fun OrderItemListPreview() {
-    OrderItemList(orderList = fakeOrderList, onOrderItemClick = {})
+    OrderItemList(orderList = fakeOrderWithProductsList) {}
 }
 
 @Composable
@@ -111,14 +166,42 @@ fun OrderContentPreview() {
     OrderContent(
         onOrderItemClick = { },
         onAddOrderClick = {  },
-        orderList = fakeOrderList
+        orderList = fakeOrderWithProductsList,
+        showProgress = true
     )
 }
 
-private val fakeOrderList = arrayListOf(
+private val fakeProductList = listOf(
+    ProductEntity(id = 0, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0),
+    ProductEntity(id = 1, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0),
+    ProductEntity(id = 2, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0),
+    ProductEntity(id = 3, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0),
+    ProductEntity(id = 4, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0)
+)
+
+private val fakeOrderList = listOf(
     OrderEntity(id = 0, client = "Lala", createdAt = Date()),
     OrderEntity(id = 1, client = "Bleble", createdAt = Date()),
     OrderEntity(id = 2, client = "Blublu", createdAt = Date()),
     OrderEntity(id = 3, client = "Mumu", createdAt = Date()),
     OrderEntity(id = 4, client = "Meme", createdAt = Date())
+)
+
+private val fakeOrderWithProductsList = listOf(
+    OrderWithProducts(
+        order = fakeOrderList[0],
+        products = listOf(fakeProductList[0])
+    ),
+    OrderWithProducts(
+        order = fakeOrderList[1],
+        products = listOf(fakeProductList[0])
+    ),
+    OrderWithProducts(
+        order = fakeOrderList[2],
+        products = listOf(fakeProductList[0])
+    ),
+    OrderWithProducts(
+        order = fakeOrderList[3],
+        products = listOf(fakeProductList[0])
+    )
 )

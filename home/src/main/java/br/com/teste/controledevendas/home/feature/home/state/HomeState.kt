@@ -5,8 +5,9 @@ import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
 
 data class HomeUiState (
     val loading: Boolean = false,
-    val error: ErrorType? = null,
-    val orderWithProductsList: List<OrderWithProducts> = listOf()
+    var error: ErrorType = ErrorType.NONE,
+    val orderWithProductsList: List<OrderWithProducts> = listOf(),
+    var totalSales: Double = 0.0
 )
 
 sealed class HomeIntent {

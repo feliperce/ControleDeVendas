@@ -7,14 +7,14 @@ import androidx.room.PrimaryKey
 import androidx.room.Relation
 import java.util.Date
 
-@Entity
+@Entity(tableName = "orders")
 data class OrderEntity(
     @PrimaryKey val id: Long,
     val client: String,
     @ColumnInfo(name = "created_at") val createdAt: Date
 )
 
-@Entity
+@Entity(tableName = "products")
 data class ProductEntity(
     @PrimaryKey val id: Long,
     val name: String,

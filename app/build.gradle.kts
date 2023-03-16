@@ -87,5 +87,7 @@ dependencies {
     implementation(Dependencies.Androidx.Room.ktx)
 
     implementation(project(":design"))
+    implementation(project(":home"))
+    implementation(project(":data"))
 
 }

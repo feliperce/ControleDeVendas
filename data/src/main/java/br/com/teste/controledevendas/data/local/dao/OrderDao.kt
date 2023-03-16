@@ -15,7 +15,7 @@ interface OrderDao {
     fun insertOrder(order: OrderEntity)
 
     @Transaction
-    @Query("SELECT * FROM OrderEntity")
+    @Query("SELECT * FROM orders")
     fun getOrdersWithProducts(): Flow<List<OrderWithProducts>>
 
 }
