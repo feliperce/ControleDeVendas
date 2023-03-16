@@ -17,6 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import br.com.teste.controledevendas.data.handler.ErrorType
 import br.com.teste.controledevendas.data.local.entity.OrderEntity
 import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
 import br.com.teste.controledevendas.data.local.entity.ProductEntity
@@ -24,7 +25,50 @@ import br.com.teste.controledevendas.design.component.DefaultAppBar
 import br.com.teste.controledevendas.design.theme.MarginPaddingSizeMedium
 import br.com.teste.controledevendas.design.theme.TextSizeLarge
 import br.com.teste.controledevendas.home.R
+import br.com.teste.controledevendas.home.feature.detail.state.OrderDetailIntent
+import br.com.teste.controledevendas.home.feature.detail.viewmodel.OrderDetailViewModel
+import org.koin.androidx.compose.getViewModel
 import java.util.*
+
+@Composable
+fun OrderDetailScreen(
+    orderDetailViewModel: OrderDetailViewModel = getViewModel(),
+    orderId: Long
+) {
+
+    val scaffoldState = rememberScaffoldState()
+    val orderDetailUiState by orderDetailViewModel.orderDetailState.collectAsState()
+
+    orderDetailViewModel.sendIntent(OrderDetailIntent.GetAllOrdersWithProducts(orderId))
+
+    orderDetailUiState.error.let { error ->
+        if (error != ErrorType.NONE) {
+            val errorMsg = stringResource(id = R.string.order_detail_error_generic)
+
+            LaunchedEffect(Unit) {
+                scaffoldState.snackbarHostState.showSnackbar(message = errorMsg)
+                orderDetailUiState.error = ErrorType.NONE
+            }
+        }
+    }
+
+    orderDetailUiState.orderWithProducts?.let {
+        OrderDetailContent(
+            showProgress = orderDetailUiState.loading,
+            order = it,
+            onRemoveButtonClick = {
+
+            }
+        )
+    } ?: run {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            Text(text = stringResource(id = R.string.order_detail_empty))
+        }
+    }
+}
 
 @Composable
 fun OrderDetailContent(

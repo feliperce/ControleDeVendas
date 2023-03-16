@@ -18,4 +18,8 @@ interface OrderDao {
     @Query("SELECT * FROM orders")
     fun getOrdersWithProducts(): Flow<List<OrderWithProducts>>
 
+    @Transaction
+    @Query("SELECT * FROM orders WHERE orders.id = :orderId")
+    fun getOrderWithProductsByOrderId(orderId: Long): Flow<OrderWithProducts>
+
 }

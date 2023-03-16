@@ -3,10 +3,7 @@ package br.com.teste.controledevendas.home.feature.home.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.teste.controledevendas.data.handler.Resource
-import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
-import br.com.teste.controledevendas.data.local.entity.ProductEntity
 import br.com.teste.controledevendas.home.feature.home.extensions.sumAllSales
-import br.com.teste.controledevendas.home.feature.home.repository.OrderRepository
 import br.com.teste.controledevendas.home.feature.home.repository.OrderRepositoryImpl
 import br.com.teste.controledevendas.home.feature.home.state.HomeIntent
 import br.com.teste.controledevendas.home.feature.home.state.HomeUiState

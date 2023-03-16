@@ -21,4 +21,7 @@
     <string name="sale_detail_remove_positive_button">sim</string>
     <string name="sale_detail_remove_negative_button">não</string>
 
+    <string name="order_detail_error_generic">Erro ao retornar o detalhe do pedido, tente novamente mais tarde</string>
+    <string name="order_detail_empty">Não foram encontradas informações sobre este pedido</string>
+
 </resources>
