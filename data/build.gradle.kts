@@ -35,6 +35,7 @@ dependencies {
 
     // Room
     implementation(Dependencies.Androidx.Room.runtime)
+    annotationProcessor(Dependencies.Androidx.Room.compiler)
     kapt(Dependencies.Androidx.Room.compiler)
     implementation(Dependencies.Androidx.Room.ktx)
 }
