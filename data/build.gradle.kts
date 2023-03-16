@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
 }
 
 android {
@@ -31,4 +32,10 @@ dependencies {
 
     implementation(Dependencies.Androidx.core)
     implementation(Dependencies.Androidx.Lifecycle.runtimeKtx)
+
+    // Room
+    implementation(Dependencies.Androidx.Room.runtime)
+    annotationProcessor(Dependencies.Androidx.Room.compiler)
+    kapt(Dependencies.Androidx.Room.compiler)
+    implementation(Dependencies.Androidx.Room.ktx)
 }
