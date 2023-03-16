@@ -57,7 +57,8 @@ fun HomeScreen(
 
         },
         orderList = homeUiState.orderWithProductsList,
-        showProgress = homeUiState.loading
+        showProgress = homeUiState.loading,
+        totalSales = homeUiState.totalSales
     )
 
 }
@@ -68,7 +69,8 @@ fun OrderContent(
     onOrderItemClick: (order: OrderEntity) -> Unit,
     showProgress: Boolean,
     onAddOrderClick: () -> Unit,
-    orderList: List<OrderWithProducts>
+    orderList: List<OrderWithProducts>,
+    totalSales: Double
 ) {
 
     Scaffold(
@@ -76,7 +78,7 @@ fun OrderContent(
         topBar = {
             DefaultAppBar(
                 title = stringResource(id = R.string.screen_title),
-                subTitle = stringResource(id = R.string.screen_subtitle, 5.0)
+                subTitle = stringResource(id = R.string.screen_subtitle, totalSales)
             )
         },
         content = {
@@ -167,7 +169,8 @@ fun OrderContentPreview() {
         onOrderItemClick = { },
         onAddOrderClick = {  },
         orderList = fakeOrderWithProductsList,
-        showProgress = true
+        showProgress = true,
+        totalSales = 1260.31
     )
 }
 
