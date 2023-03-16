@@ -1,10 +1,11 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
 }
 
 android {
-    namespace = Config.namespace
+    namespace = Config.getNameSpaceByModuleName("data")
     compileSdk = Config.compileSdk
 
     defaultConfig {
@@ -31,4 +32,10 @@ dependencies {
 
     implementation(Dependencies.Androidx.core)
     implementation(Dependencies.Androidx.Lifecycle.runtimeKtx)
+
+    // Room
+    implementation(Dependencies.Androidx.Room.runtime)
+    annotationProcessor(Dependencies.Androidx.Room.compiler)
+    kapt(Dependencies.Androidx.Room.compiler)
+    implementation(Dependencies.Androidx.Room.ktx)
 }

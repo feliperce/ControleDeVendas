@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    namespace = "br.com.teste.controledevendas.design"
-    compileSdk = 32
+    namespace = Config.getNameSpaceByModuleName("design")
+    compileSdk = Config.compileSdk
 
     defaultConfig {
-        minSdk = 21
-        targetSdk = 32
+        minSdk = Config.minSdk
+        targetSdk = Config.targetSdk
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -31,14 +31,35 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures {
+        compose = true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion = Versions.composeKotlinCompiler
+    }
+    packagingOptions {
+        resources {
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
-    implementation("com.google.android.material:material:1.8.0")
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    val composeBom = platform(Dependencies.Androidx.Compose.bom)
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+
+    implementation(Dependencies.Androidx.Compose.material)
+    implementation(Dependencies.Androidx.Compose.ui)
+    implementation(Dependencies.Androidx.Compose.toolingPreview)
+    debugImplementation(Dependencies.Androidx.Compose.uiTooling)
+    androidTestImplementation(Dependencies.Androidx.Compose.junit)
+    debugImplementation(Dependencies.Androidx.Compose.testManifest)
+    implementation(Dependencies.Androidx.Compose.viewmodel)
+    implementation(Dependencies.Androidx.Compose.livedata)
+    implementation(Dependencies.Androidx.Compose.iconsCore)
+    implementation(Dependencies.Androidx.Compose.iconsExtended)
+    implementation(Dependencies.Androidx.Compose.activity)
+    implementation(Dependencies.Androidx.Compose.constraint)
 }

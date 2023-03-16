@@ -86,4 +86,6 @@ dependencies {
     kapt(Dependencies.Androidx.Room.compiler)
     implementation(Dependencies.Androidx.Room.ktx)
 
+    implementation(project(":design"))
+
 }
