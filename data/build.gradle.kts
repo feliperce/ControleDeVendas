@@ -38,4 +38,8 @@ dependencies {
     annotationProcessor(Dependencies.Androidx.Room.compiler)
     kapt(Dependencies.Androidx.Room.compiler)
     implementation(Dependencies.Androidx.Room.ktx)
+
+    // Koin
+    implementation(Dependencies.Koin.koin)
+    implementation(Dependencies.Koin.compose)
 }

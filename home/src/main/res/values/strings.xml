@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="screen_title">Controle de Vendas</string>
+    <string name="screen_subtitle">Total de vendas: R$ %s</string>
 
     <string name="home_order_item_order">Order: #%s</string>
     <string name="home_order_item_client">Cliente: %s</string>
+
+    <string name="home_error_generic">Erro ao retornar seus pedidos, tente novamente mais tarde</string>
 
 </resources>
