@@ -8,6 +8,8 @@
 
     <string name="home_error_generic">Erro ao retornar seus pedidos, tente novamente mais tarde</string>
 
+    <string name="home_created_at">Criado em: %s</string>
+
     <!-- Detail -->
     <string name="sale_detail_title">Pedido: #%s</string>
     <string name="sale_detail_client">Cliente: %s</string>
