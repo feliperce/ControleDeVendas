@@ -26,4 +26,27 @@
 
     <string name="order_detail_removal">Pedido removido com sucesso!</string>
 
+    <!-- Add Order -->
+    <string name="add_order_title">Registrar novo pedido</string>
+
+    <string name="add_order_client_tf">Nome do cliente</string>
+    <string name="add_order_product_expandable">Produtos (total: %s)</string>
+    <string name="add_order_product_button">Adicionar produto</string>
+
+    <string name="add_order_save_dialog_title">Deseja reigstrar este pedido?</string>
+    <string name="add_order_save_positive_button">sim</string>
+    <string name="add_order_save_negative_button">não</string>
+
+    <string name="add_order_add_dialog_title">Adicionar produto</string>
+    <string name="add_order_add_dialog_positive_button">adicionar</string>
+    <string name="add_order_add_dialog_negative_button">cancelar</string>
+    <string name="add_order_add_dialog_msg">* São campos obrigatórios.\nÉ obrigatorio definir um preço e quantidade acima de 0</string>
+    <string name="add_order_add_dialog_name_tf">Nome *</string>
+    <string name="add_order_add_dialog_desc_tf">Descrição</string>
+    <string name="add_order_add_dialog_qt_tf">Quantidade *</string>
+    <string name="add_order_add_dialog_price_tf">Preço *</string>
+    <string name="add_order_add_dialog_name_tf_error">Precisa informar o nome do produto</string>
+    <string name="add_order_add_dialog_qt_error">Precisa informar a quantidade do produto</string>
+    <string name="add_order_add_dialog_price_error">Precisa informar o preço do produto</string>
+
 </resources>

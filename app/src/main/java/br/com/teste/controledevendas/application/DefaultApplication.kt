@@ -2,6 +2,7 @@ package br.com.teste.controledevendas.application
 
 import android.app.Application
 import br.com.teste.controledevendas.data.di.dataModule
+import br.com.teste.controledevendas.order.feature.addorder.di.addOrderModule
 import br.com.teste.controledevendas.order.feature.detail.di.orderDetailModule
 import br.com.teste.controledevendas.order.feature.home.di.homeModule
 import org.koin.android.ext.koin.androidContext
@@ -18,7 +19,8 @@ class DefaultApplication : Application() {
                 arrayListOf(
                     dataModule,
                     homeModule,
-                    orderDetailModule
+                    orderDetailModule,
+                    addOrderModule
                 )
             )
         }

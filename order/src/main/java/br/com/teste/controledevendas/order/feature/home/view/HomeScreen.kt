@@ -26,6 +26,11 @@ import br.com.teste.controledevendas.design.theme.TextSizeSmall
 import br.com.teste.controledevendas.order.R
 import br.com.teste.controledevendas.order.feature.home.state.HomeIntent
 import br.com.teste.controledevendas.order.feature.home.viewmodel.HomeViewModel
+import br.com.teste.controledevendas.order.mapper.FakeData.fakeOrderList
+import br.com.teste.controledevendas.order.mapper.FakeData.fakeOrderWithProductsList
+import br.com.teste.controledevendas.order.mapper.OrderDto
+import br.com.teste.controledevendas.order.mapper.OrderWithProductsDto
+import br.com.teste.controledevendas.order.mapper.ProductDto
 import org.koin.androidx.compose.getViewModel
 import java.util.*
 
@@ -68,10 +73,10 @@ fun HomeScreen(
 @Composable
 fun OrderContent(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
-    onOrderItemClick: (order: OrderEntity) -> Unit,
+    onOrderItemClick: (order: OrderDto) -> Unit,
     showProgress: Boolean,
     onAddOrderClick: () -> Unit,
-    orderList: List<OrderWithProducts>,
+    orderList: List<OrderWithProductsDto>,
     totalSales: Double
 ) {
 
@@ -118,12 +123,12 @@ fun OrderContent(
 
 @Composable
 fun OrderItemList(
-    orderList: List<OrderWithProducts>,
-    onOrderItemClick: (order: OrderEntity) -> Unit
+    orderList: List<OrderWithProductsDto>,
+    onOrderItemClick: (order: OrderDto) -> Unit
 ) {
     LazyColumn() {
         items(orderList) {
-            OrderItem(order = it.order, onOrderItemClick = onOrderItemClick)
+            OrderItem(order = it.orderDto, onOrderItemClick = onOrderItemClick)
             Divider(color = Color.Black, thickness = 1.dp)
         }
     }
@@ -131,8 +136,8 @@ fun OrderItemList(
 
 @Composable
 fun OrderItem(
-    order: OrderEntity,
-    onOrderItemClick: (order: OrderEntity) -> Unit
+    order: OrderDto,
+    onOrderItemClick: (order: OrderDto) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -175,38 +180,3 @@ fun OrderContentPreview() {
         totalSales = 1260.31
     )
 }
-
-private val fakeProductList = listOf(
-    ProductEntity(id = 0, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0),
-    ProductEntity(id = 1, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0),
-    ProductEntity(id = 2, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0),
-    ProductEntity(id = 3, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0),
-    ProductEntity(id = 4, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0)
-)
-
-private val fakeOrderList = listOf(
-    OrderEntity(id = 0, client = "Lala", createdAt = Date()),
-    OrderEntity(id = 1, client = "Bleble", createdAt = Date()),
-    OrderEntity(id = 2, client = "Blublu", createdAt = Date()),
-    OrderEntity(id = 3, client = "Mumu", createdAt = Date()),
-    OrderEntity(id = 4, client = "Meme", createdAt = Date())
-)
-
-private val fakeOrderWithProductsList = listOf(
-    OrderWithProducts(
-        order = fakeOrderList[0],
-        products = listOf(fakeProductList[0])
-    ),
-    OrderWithProducts(
-        order = fakeOrderList[1],
-        products = listOf(fakeProductList[0])
-    ),
-    OrderWithProducts(
-        order = fakeOrderList[2],
-        products = listOf(fakeProductList[0])
-    ),
-    OrderWithProducts(
-        order = fakeOrderList[3],
-        products = listOf(fakeProductList[0])
-    )
-)

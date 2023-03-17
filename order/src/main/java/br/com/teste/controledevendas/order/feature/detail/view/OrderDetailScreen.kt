@@ -33,6 +33,10 @@ import br.com.teste.controledevendas.design.theme.TextSizeSmall
 import br.com.teste.controledevendas.order.R
 import br.com.teste.controledevendas.order.feature.detail.state.OrderDetailIntent
 import br.com.teste.controledevendas.order.feature.detail.viewmodel.OrderDetailViewModel
+import br.com.teste.controledevendas.order.mapper.FakeData.fakeOrderWithProductsList
+import br.com.teste.controledevendas.order.mapper.FakeData.fakeProductList
+import br.com.teste.controledevendas.order.mapper.OrderWithProductsDto
+import br.com.teste.controledevendas.order.mapper.ProductDto
 import org.koin.androidx.compose.getViewModel
 import java.util.*
 
@@ -94,8 +98,8 @@ fun OrderDetailScreen(
 fun OrderDetailContent(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     showProgress: Boolean,
-    order: OrderWithProducts,
-    onRemoveButtonClick: (orderWithProducts: OrderWithProducts) -> Unit,
+    order: OrderWithProductsDto,
+    onRemoveButtonClick: (orderWithProducts: OrderWithProductsDto) -> Unit,
     onBackButtonClick: () -> Unit
 ) {
 
@@ -113,8 +117,8 @@ fun OrderDetailContent(
         scaffoldState = scaffoldState,
         topBar = {
             DefaultAppBar(
-                title = stringResource(id = R.string.sale_detail_title, order.order.id),
-                subTitle = order.order.client,
+                title = stringResource(id = R.string.sale_detail_title, order.orderDto.client),
+                subTitle = order.orderDto.client,
                 actions = {
                     TopMenu(
                         onRemoveButtonClick = {
@@ -143,7 +147,7 @@ fun OrderDetailContent(
                 modifier = Modifier.fillMaxSize()
             ) {
                 ProductItemList(
-                    productList = order.products
+                    productList = order.productDtoList
                 )
             }
         }
@@ -151,7 +155,7 @@ fun OrderDetailContent(
 }
 
 @Composable
-fun ProductItem(product: ProductEntity) {
+fun ProductItem(product: ProductDto) {
     Column(
         modifier = Modifier.padding(MarginPaddingSizeMedium)
     ) {
@@ -192,7 +196,7 @@ fun ProductItem(product: ProductEntity) {
 }
 
 @Composable
-fun ProductItemList(productList: List<ProductEntity>) {
+fun ProductItemList(productList: List<ProductDto>) {
     LazyColumn() {
         item {
             Text(
@@ -230,8 +234,8 @@ fun TopMenu(
 @Composable
 fun RemoveDialog(
     onDismiss: () -> Unit,
-    orderWithProducts: OrderWithProducts,
-    onRemoveButtonClick: (orderWithProducts: OrderWithProducts) -> Unit
+    orderWithProducts: OrderWithProductsDto,
+    onRemoveButtonClick: (orderWithProducts: OrderWithProductsDto) -> Unit
 ) {
 
     AlertDialog(
@@ -296,38 +300,5 @@ fun RemoveDialogPreview() {
     )
 }
 
-private val fakeProductList = listOf(
-    ProductEntity(id = 0, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0),
-    ProductEntity(id = 1, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0),
-    ProductEntity(id = 2, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0),
-    ProductEntity(id = 3, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0),
-    ProductEntity(id = 4, name = "Naaaame", description = "Desc", qt = 5, price = 10.5, orderId = 0)
-)
 
-private val fakeOrderList = listOf(
-    OrderEntity(id = 0, client = "Lala", createdAt = Date()),
-    OrderEntity(id = 1, client = "Bleble", createdAt = Date()),
-    OrderEntity(id = 2, client = "Blublu", createdAt = Date()),
-    OrderEntity(id = 3, client = "Mumu", createdAt = Date()),
-    OrderEntity(id = 4, client = "Meme", createdAt = Date())
-)
-
-private val fakeOrderWithProductsList = listOf(
-    OrderWithProducts(
-        order = fakeOrderList[0],
-        products = listOf(fakeProductList[0])
-    ),
-    OrderWithProducts(
-        order = fakeOrderList[1],
-        products = listOf(fakeProductList[0])
-    ),
-    OrderWithProducts(
-        order = fakeOrderList[2],
-        products = listOf(fakeProductList[0])
-    ),
-    OrderWithProducts(
-        order = fakeOrderList[3],
-        products = listOf(fakeProductList[0])
-    )
-)
 

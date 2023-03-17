@@ -27,4 +27,7 @@ interface OrderDao {
     @Delete
     fun deleteOrderWithProducts(order: OrderEntity, products: List<ProductEntity>)
 
+    @Insert
+    fun insertOrderWithProducts(order: OrderEntity, products: List<ProductEntity>)
+
 }

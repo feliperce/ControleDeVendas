@@ -7,6 +7,7 @@ import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
 import br.com.teste.controledevendas.order.feature.detail.repository.OrderDetailRepositoryImpl
 import br.com.teste.controledevendas.order.feature.detail.state.OrderDetailIntent
 import br.com.teste.controledevendas.order.feature.detail.state.OrderDetailUiState
+import br.com.teste.controledevendas.order.mapper.OrderWithProductsDto
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -71,7 +72,7 @@ class OrderDetailViewModel(
         }
     }
 
-    private fun removeOrderWithProducts(orderWithProducts: OrderWithProducts) {
+    private fun removeOrderWithProducts(orderWithProducts: OrderWithProductsDto) {
         viewModelScope.launch {
             orderDetailRepositoryImpl.removeOrderWithProducts(orderWithProducts).collect { res ->
                 when (res) {
