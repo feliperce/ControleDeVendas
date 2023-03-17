@@ -1,6 +1,7 @@
 package br.com.teste.controledevendas.data.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
@@ -21,5 +22,11 @@ interface OrderDao {
     @Transaction
     @Query("SELECT * FROM orders WHERE orders.id = :orderId")
     fun getOrderWithProductsByOrderId(orderId: Long): Flow<OrderWithProducts>
+
+    @Delete
+    fun deleteOrderWithProducts(orderWithProducts: OrderWithProducts)
+
+    @Query("DELETE FROM orders WHERE orders.id = :orderId")
+    fun deleteOrderWithProductsByOrderId(orderId: Long)
 
 }

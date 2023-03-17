@@ -44,7 +44,7 @@ fun OrderDetailScreen(
     val scaffoldState = rememberScaffoldState()
     val orderDetailUiState by orderDetailViewModel.orderDetailState.collectAsState()
 
-    orderDetailViewModel.sendIntent(OrderDetailIntent.GetAllOrdersWithProducts(orderId))
+    orderDetailViewModel.sendIntent(OrderDetailIntent.GetAllOrdersWithProductsByOrderId(orderId))
 
     orderDetailUiState.error.let { error ->
         if (error != ErrorType.NONE) {
@@ -61,8 +61,10 @@ fun OrderDetailScreen(
         OrderDetailContent(
             showProgress = orderDetailUiState.loading,
             order = it,
-            onRemoveButtonClick = {
-
+            onRemoveButtonClick = { orderWithProducts ->
+                orderDetailViewModel.sendIntent(
+                    OrderDetailIntent.RemoveOrderWithProductsByOrderId(orderWithProducts.order.id)
+                )
             },
             onBackButtonClick = {
                 navController.popBackStack()

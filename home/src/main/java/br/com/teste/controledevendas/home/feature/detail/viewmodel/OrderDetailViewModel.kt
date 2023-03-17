@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import br.com.teste.controledevendas.data.handler.Resource
 import br.com.teste.controledevendas.home.feature.detail.repository.OrderDetailRepositoryImpl
 import br.com.teste.controledevendas.home.feature.detail.state.OrderDetailIntent
-import br.com.teste.controledevendas.home.feature.detail.state.OrderUiState
+import br.com.teste.controledevendas.home.feature.detail.state.OrderDetailUiState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -16,8 +16,8 @@ class OrderDetailViewModel(
 
     private val intentChannel = Channel<OrderDetailIntent>(Channel.UNLIMITED)
 
-    private val _orderDetailState = MutableStateFlow(OrderUiState(loading = false))
-    val orderDetailState: StateFlow<OrderUiState> = _orderDetailState.asStateFlow()
+    private val _orderDetailState = MutableStateFlow(OrderDetailUiState(loading = false))
+    val orderDetailState: StateFlow<OrderDetailUiState> = _orderDetailState.asStateFlow()
 
     init {
         handleIntents()
@@ -34,8 +34,11 @@ class OrderDetailViewModel(
             .consumeAsFlow()
             .onEach { intent ->
                 when(intent) {
-                    is OrderDetailIntent.GetAllOrdersWithProducts -> {
+                    is OrderDetailIntent.GetAllOrdersWithProductsByOrderId -> {
                         getAllOrdersWithProducts(intent.orderId)
+                    }
+                    is OrderDetailIntent.RemoveOrderWithProductsByOrderId -> {
+
                     }
                 }
             }.launchIn(viewModelScope)
