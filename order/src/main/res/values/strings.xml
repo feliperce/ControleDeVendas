@@ -29,6 +29,7 @@
     <!-- Add Order -->
     <string name="add_order_form_invalid">Campos informados sao invalidos</string>
     <string name="add_order_title">Registrar novo pedido</string>
+    <string name="add_order_subtitle">Total do pedido: R$ %s</string>
 
     <string name="add_order_client_tf">Nome do cliente</string>
     <string name="add_order_product_expandable">Produtos (total: %s)</string>

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.teste.controledevendas.data.handler.ErrorType
 import br.com.teste.controledevendas.order.R
+import br.com.teste.controledevendas.order.feature.addorder.extensions.sumAllProducts
 import br.com.teste.controledevendas.order.feature.addorder.model.FormData
 import br.com.teste.controledevendas.order.feature.addorder.repository.AddOrderRepositoryImpl
 import br.com.teste.controledevendas.order.feature.addorder.state.AddOrderIntent
@@ -53,7 +54,8 @@ class AddOrderViewModel(
             _orderDetailState.update {
                 it.formDataList.add(formData)
                 it.copy(
-                    error = ErrorType.NONE
+                    error = ErrorType.NONE,
+                    orderTotal = it.formDataList.sumAllProducts()
                 )
             }
         } else {

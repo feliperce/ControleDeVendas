@@ -81,7 +81,8 @@ fun AddOrderScreen(
                 AddOrderIntent.ValidateForm(it)
             )
         },
-        formDataList = orderDetailUiState.formDataList
+        formDataList = orderDetailUiState.formDataList,
+        orderTotal = orderDetailUiState.orderTotal
     )
 }
 
@@ -90,9 +91,10 @@ fun AddOrderContent(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     showProgress: Boolean,
     formDataList: List<FormData>,
+    orderTotal: Double,
     onSaveButtonClick: (orderWithProducts: OrderWithProducts) -> Unit,
     onBackButtonClick: () -> Unit,
-    onAddProductClick: (formData: FormData) -> Unit
+    onAddProductClick: (formData: FormData) -> Unit,
 ) {
 
     var onSaveDialogState by remember { mutableStateOf(false) }
@@ -110,6 +112,7 @@ fun AddOrderContent(
         topBar = {
             DefaultAppBar(
                 title = stringResource(id = R.string.add_order_title),
+                subTitle = stringResource(id = R.string.add_order_subtitle, orderTotal),
                 actions = {
                     TopMenu(
                         onSaveButtonClick = {
