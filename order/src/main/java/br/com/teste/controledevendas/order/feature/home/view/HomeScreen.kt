@@ -146,10 +146,11 @@ fun OrderItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(MarginPaddingSizeMedium)
             .clickable {
                 onOrderItemClick(order)
             }
+            .padding(MarginPaddingSizeMedium)
+
     ) {
         Text(text = stringResource(id = R.string.home_order_item_order, order.id))
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.disabled) {
