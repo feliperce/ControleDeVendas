@@ -115,7 +115,7 @@ fun OrderDetailContent(
         scaffoldState = scaffoldState,
         topBar = {
             DefaultAppBar(
-                title = stringResource(id = R.string.sale_detail_title, order.orderDto.client),
+                title = stringResource(id = R.string.sale_detail_title, order.orderDto.id),
                 subTitle = order.orderDto.client,
                 actions = {
                     TopMenu(

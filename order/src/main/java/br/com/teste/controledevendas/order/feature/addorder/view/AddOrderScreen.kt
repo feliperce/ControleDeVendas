@@ -53,13 +53,22 @@ fun AddOrderScreen(
 
     addOrderUiState.error.let { error ->
         if (error != ErrorType.NONE) {
-            val errorMsg = if (error == ErrorType.INVALID_FORM) {
-                stringResource(id = R.string.add_order_form_invalid)
-            } else {
-                stringResource(id = R.string.order_detail_error_generic)
+            val errorMsg = when (error) {
+                ErrorType.INVALID_FORM -> {
+                    stringResource(id = R.string.add_order_form_invalid)
+                }
+                ErrorType.EMPTY_CLIENT_NAME -> {
+                    stringResource(id = R.string.add_order_save_client_name_error)
+                }
+                ErrorType.GENERIC -> {
+                    stringResource(id = R.string.order_detail_error_generic)
+                }
+                else -> {
+                    stringResource(id = R.string.add_order_save_product_error)
+                }
             }
 
-            LaunchedEffect(Unit) {
+            LaunchedEffect(addOrderUiState.error) {
                 scaffoldState.snackbarHostState.showSnackbar(message = errorMsg)
                 addOrderUiState.error = ErrorType.NONE
             }
@@ -76,6 +85,9 @@ fun AddOrderScreen(
         scaffoldState = scaffoldState,
         showProgress = addOrderUiState.loading,
         onSaveButtonClick = { clientName ->
+            addOrderViewModel.sendIntent(
+                AddOrderIntent.ValidateOrder(clientName)
+            )
             addOrderViewModel.sendIntent(
                 AddOrderIntent.AddOrder(clientName)
             )
