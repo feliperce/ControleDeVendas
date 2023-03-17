@@ -10,21 +10,21 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import br.com.teste.controledevendas.design.theme.ControleDeVendasTheme
 import br.com.teste.controledevendas.home.feature.home.view.HomeScreen
+import br.com.teste.controledevendas.navhost.DefaultNavHost
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
+            val navController = rememberNavController()
+
             ControleDeVendasTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    HomeScreen()
-                }
+                DefaultNavHost(
+                    navHostController = navController
+                )
             }
         }
     }

@@ -3,9 +3,27 @@
     <string name="screen_title">Controle de Vendas</string>
     <string name="screen_subtitle">Total de vendas: R$ %s</string>
 
-    <string name="home_order_item_order">Order: #%s</string>
+    <string name="home_order_item_order">Pedido: #%s</string>
     <string name="home_order_item_client">Cliente: %s</string>
 
     <string name="home_error_generic">Erro ao retornar seus pedidos, tente novamente mais tarde</string>
+
+    <!-- Detail -->
+    <string name="sale_detail_title">Pedido: #%s</string>
+    <string name="sale_detail_client">Cliente: %s</string>
+    <string name="sale_detail_qt">Quantidade: \u0020</string>
+    <string name="sale_detail_qt_unity">%s (R$ %s unidade)</string>
+    <string name="sale_detail_total">Total: \u0020</string>
+    <string name="sale_detail_total_result">R$ %s</string>
+    <string name="sale_detail_product">Produtos:</string>
+
+    <string name="sale_detail_remove_dialog_title">Deseja remover este pedido?</string>
+    <string name="sale_detail_remove_positive_button">sim</string>
+    <string name="sale_detail_remove_negative_button">não</string>
+
+    <string name="order_detail_error_generic">Erro ao retornar o detalhe do pedido, tente novamente mais tarde</string>
+    <string name="order_detail_empty">Não foram encontradas informações sobre este pedido</string>
+
+    <string name="order_detail_removal">Pedido removido com sucesso!</string>
 
 </resources>

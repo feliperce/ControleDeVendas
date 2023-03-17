@@ -9,6 +9,7 @@ object Versions {
     const val composeActivity = "1.6.1"
     const val composeViewModel = "2.5.1"
     const val constraintCompose = "1.0.1"
+    const val composeNav = "2.5.3"
     const val koin = "3.2.0"
     const val room = "2.4.1"
     const val composeKotlinCompiler = "1.3.2"

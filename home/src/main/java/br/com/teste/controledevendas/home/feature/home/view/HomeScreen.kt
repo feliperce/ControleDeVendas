@@ -11,10 +11,11 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import br.com.teste.controledevendas.data.handler.ErrorType
 import br.com.teste.controledevendas.data.local.entity.OrderEntity
 import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
@@ -22,6 +23,7 @@ import br.com.teste.controledevendas.data.local.entity.ProductEntity
 import br.com.teste.controledevendas.design.component.DefaultAppBar
 import br.com.teste.controledevendas.design.theme.MarginPaddingSizeMedium
 import br.com.teste.controledevendas.design.theme.TextSizeMicro
+import br.com.teste.controledevendas.design.theme.TextSizeSmall
 import br.com.teste.controledevendas.home.R
 import br.com.teste.controledevendas.home.feature.home.state.HomeIntent
 import br.com.teste.controledevendas.home.feature.home.viewmodel.HomeViewModel
@@ -30,6 +32,7 @@ import java.util.*
 
 @Composable
 fun HomeScreen(
+    navController: NavHostController = rememberNavController(),
     homeViewModel: HomeViewModel = getViewModel()
 ) {
 
@@ -51,7 +54,7 @@ fun HomeScreen(
 
     OrderContent(
         onOrderItemClick = {
-
+            navController.navigate("order/detail/${it.id}")
         },
         onAddOrderClick = {
 
@@ -144,7 +147,7 @@ fun OrderItem(
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.disabled) {
             Text(
                 text = stringResource(id = R.string.home_order_item_client, order.client),
-                fontSize = TextSizeMicro
+                fontSize = TextSizeSmall
             )
         }
     }
