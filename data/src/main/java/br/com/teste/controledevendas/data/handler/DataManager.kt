@@ -1,5 +1,6 @@
 package br.com.teste.controledevendas.data.handler
 
+
 sealed class Resource<T>(
     val data: T? = null,
     val isLoading: Boolean = false,

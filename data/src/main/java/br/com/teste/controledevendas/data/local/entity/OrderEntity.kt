@@ -9,19 +9,19 @@ import java.util.Date
 
 @Entity(tableName = "orders")
 data class OrderEntity(
-    @PrimaryKey val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val client: String,
-    @ColumnInfo(name = "created_at") val createdAt: Date
+    @ColumnInfo(name = "created_at") val createdAt: Date = Date()
 )
 
 @Entity(tableName = "products")
 data class ProductEntity(
-    @PrimaryKey val id: Long,
+    @PrimaryKey(autoGenerate = true) val id: Long = 0,
     val name: String,
     val description: String,
     val qt: Int,
     val price: Double,
-    val orderId: Long
+    var orderId: Long = 0
 )
 
 data class OrderWithProducts(
