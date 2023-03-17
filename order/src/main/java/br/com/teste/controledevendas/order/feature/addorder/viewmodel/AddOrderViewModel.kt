@@ -40,11 +40,8 @@ class AddOrderViewModel(
                     is AddOrderIntent.ValidateForm -> {
                         valiteFormAndUpdateUi(formData = intent.formData)
                     }
-                    is AddOrderIntent.ValidateOrder -> {
-                        validateOrder(intent.clientName)
-                    }
                     is AddOrderIntent.AddOrder -> {
-                        if (_addOrderState.value.error == ErrorType.NONE) {
+                        if (validateOrder(intent.clientName)) {
                             addOrder(intent.clientName)
                         }
                     }
@@ -78,19 +75,22 @@ class AddOrderViewModel(
         }
     }
 
-    private fun validateOrder(clientName: String) {
-        if (clientName.isEmpty()) {
+    private fun validateOrder(clientName: String): Boolean {
+        return if (clientName.isEmpty()) {
             _addOrderState.update {
                 it.copy(error = ErrorType.EMPTY_CLIENT_NAME)
             }
+            false
         } else if (_addOrderState.value.formDataList.isEmpty()) {
             _addOrderState.update {
                 it.copy(error = ErrorType.EMPTY_PRODUCTS)
             }
+            false
         } else {
             _addOrderState.update {
                 it.copy(error = ErrorType.NONE)
             }
+            true
         }
     }
 
