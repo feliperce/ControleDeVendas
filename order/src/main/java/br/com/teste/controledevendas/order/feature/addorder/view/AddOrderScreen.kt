@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -26,36 +25,42 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import br.com.teste.controledevendas.data.handler.ErrorType
 import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
-import br.com.teste.controledevendas.data.local.entity.ProductEntity
 import br.com.teste.controledevendas.design.component.DefaultAppBar
 import br.com.teste.controledevendas.design.component.ExpandableItem
 import br.com.teste.controledevendas.design.theme.Green200
 import br.com.teste.controledevendas.design.theme.MarginPaddingSizeMedium
-import br.com.teste.controledevendas.design.theme.TextSizeLarge
 import br.com.teste.controledevendas.design.theme.TextSizeSmall
 import br.com.teste.controledevendas.order.R
+import br.com.teste.controledevendas.order.feature.addorder.model.FormData
+import br.com.teste.controledevendas.order.feature.addorder.state.AddOrderIntent
+import br.com.teste.controledevendas.order.feature.addorder.viewmodel.AddOrderViewModel
 import br.com.teste.controledevendas.order.mapper.FakeData
 import br.com.teste.controledevendas.order.mapper.OrderWithProductsDto
 import br.com.teste.controledevendas.order.mapper.ProductDto
+import org.koin.androidx.compose.getViewModel
 
-/*@Composable
-fun OrderDetailScreen(
+@Composable
+fun AddOrderScreen(
     navController: NavHostController = rememberNavController(),
-    orderDetailViewModel: OrderDetailViewModel = getViewModel(),
-    orderId: Long
+    addOrderViewModel: AddOrderViewModel = getViewModel()
 ) {
 
     val context = LocalContext.current
 
     val scaffoldState = rememberScaffoldState()
-    val orderDetailUiState by orderDetailViewModel.orderDetailState.collectAsState()
-
-    orderDetailViewModel.sendIntent(OrderDetailIntent.GetAllOrdersWithProductsByOrderId(orderId))
+    val orderDetailUiState by addOrderViewModel.orderDetailState.collectAsState()
 
     orderDetailUiState.error.let { error ->
         if (error != ErrorType.NONE) {
-            val errorMsg = stringResource(id = R.string.order_detail_error_generic)
+            val errorMsg = if (error == ErrorType.INVALID_FORM) {
+                stringResource(id = R.string.add_order_form_invalid)
+            } else {
+                stringResource(id = R.string.order_detail_error_generic)
+            }
 
             LaunchedEffect(Unit) {
                 scaffoldState.snackbarHostState.showSnackbar(message = errorMsg)
@@ -64,41 +69,29 @@ fun OrderDetailScreen(
         }
     }
 
-    if (orderDetailUiState.isRemoved) {
-        Toast.makeText(context, R.string.order_detail_removal, Toast.LENGTH_LONG).show()
-        orderDetailUiState.isRemoved = false
-        navController.popBackStack()
-    }
+    AddOrderContent(
+        showProgress = orderDetailUiState.loading,
+        onSaveButtonClick = { orderWithProducts ->
 
-    orderDetailUiState.orderWithProducts?.let {
-        AddOrderContent(
-            showProgress = orderDetailUiState.loading,
-            order = it,
-            onSaveButtonClick = { orderWithProducts ->
-                orderDetailViewModel.sendIntent(
-                    OrderDetailIntent.RemoveOrderWithProducts(orderWithProducts)
-                )
-            },
-            onBackButtonClick = {
-                navController.popBackStack()
-            }
-        )
-    } ?: run {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            Text(text = stringResource(id = R.string.order_detail_empty))
+        },
+        onBackButtonClick = {
+            navController.popBackStack()
+        },
+        onAddProductClick = {
+            addOrderViewModel.sendIntent(
+                AddOrderIntent.ValidateForm(it)
+            )
         }
-    }
-}*/
+    )
+}
 
 @Composable
 fun AddOrderContent(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     showProgress: Boolean,
     onSaveButtonClick: (orderWithProducts: OrderWithProducts) -> Unit,
-    onBackButtonClick: () -> Unit
+    onBackButtonClick: () -> Unit,
+    onAddProductClick: (formData: FormData) -> Unit
 ) {
 
     var onSaveDialogState by remember { mutableStateOf(false) }
@@ -144,9 +137,7 @@ fun AddOrderContent(
                 modifier = Modifier.fillMaxSize()
             ) {
                 AddOrderForm(
-                    onAddProductClick = { name, description, qt, price ->  
-                        
-                    }
+                    onAddProductClick = onAddProductClick
                 )
             }
         }
@@ -155,7 +146,7 @@ fun AddOrderContent(
 
 @Composable
 fun AddOrderForm(
-    onAddProductClick: (name: String, description: String, qt: String, price: String) -> Unit
+    onAddProductClick: (formData: FormData) -> Unit
 ) {
 
     var clientText by remember { mutableStateOf("") }
@@ -164,9 +155,7 @@ fun AddOrderForm(
 
     if (showAddProductDialog) {
         AddProductDialog(
-            onAddProductClick = { name, description, qt, price ->  
-                                
-            },
+            onAddProductClick = onAddProductClick,
             onDismiss = { showAddProductDialog = false }
         )
     }
@@ -321,7 +310,7 @@ fun SaveDialog(
 
 @Composable
 private fun AddProductDialog(
-    onAddProductClick: (name: String, description: String, qt: String, price: String) -> Unit,
+    onAddProductClick: (formData: FormData) -> Unit,
     onDismiss: () -> Unit
 ) {
     /*val name: String,
@@ -342,10 +331,13 @@ private fun AddProductDialog(
             TextButton(
                 onClick = {
                     onAddProductClick(
-                        nameText,
-                        descText,
-                        qtText,
-                        priceText
+                        FormData(
+                            name = nameText,
+                            description = descText,
+                            qt = qtText,
+                            price = priceText
+                        )
+
                     )
                     onDismiss()
                 }
@@ -434,46 +426,7 @@ private fun AddProductDialog(
     )
 }
 
-private fun validateForm(
-    context: Context,
-    nameText: String,
-    qtText: String,
-    priceText: String
-): Boolean {
-    val isValid: Boolean
 
-    if (nameText.isEmpty()) {
-        Toast.makeText(
-            context,
-            R.string.add_order_add_dialog_name_tf_error,
-            Toast.LENGTH_LONG
-        ).show()
-        isValid = false
-    } else {
-        if (qtText.isEmpty()) {
-            Toast.makeText(
-                context,
-                R.string.add_order_add_dialog_qt_error,
-                Toast.LENGTH_LONG
-            ).show()
-
-            isValid = false
-        } else {
-            isValid = if (priceText.isEmpty()) {
-                Toast.makeText(
-                    context,
-                    R.string.add_order_add_dialog_price_error,
-                    Toast.LENGTH_LONG
-                ).show()
-                false
-            } else {
-                true
-            }
-        }
-    }
-
-    return isValid
-}
 
 @Composable
 @Preview(showBackground = true)
@@ -490,7 +443,7 @@ fun ProductItemListPreview() {
 @Composable
 @Preview(showBackground = true)
 fun AddOrderFormPreview() {
-    AddOrderForm { _, _, _, _ -> }
+    AddOrderForm { }
 }
 
 /*@Composable
@@ -518,7 +471,7 @@ fun RemoveDialogPreview() {
 @Preview(showBackground = true)
 fun AddProductDialogPreview() {
     AddProductDialog(
-        onAddProductClick = {_,_,_,_ -> },
+        onAddProductClick = {},
         onDismiss = {}
     )
 }

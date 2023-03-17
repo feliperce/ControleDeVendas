@@ -27,6 +27,7 @@
     <string name="order_detail_removal">Pedido removido com sucesso!</string>
 
     <!-- Add Order -->
+    <string name="add_order_form_invalid">Campos informados sao invalidos</string>
     <string name="add_order_title">Registrar novo pedido</string>
 
     <string name="add_order_client_tf">Nome do cliente</string>

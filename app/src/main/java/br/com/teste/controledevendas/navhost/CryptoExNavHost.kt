@@ -10,6 +10,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import br.com.teste.controledevendas.order.feature.addorder.view.AddOrderScreen
 import br.com.teste.controledevendas.order.feature.detail.view.OrderDetailScreen
 import br.com.teste.controledevendas.order.feature.home.view.HomeScreen
 
@@ -42,6 +43,16 @@ fun DefaultNavHost(
                         orderId = arg.getLong("orderId")
                     )
                 }
+            }
+        }
+        composable("order/add") {
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = MaterialTheme.colors.background
+            ) {
+                AddOrderScreen(
+                    navController = navHostController
+                )
             }
         }
     }

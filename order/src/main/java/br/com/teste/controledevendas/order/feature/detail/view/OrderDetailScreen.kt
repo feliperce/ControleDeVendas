@@ -23,9 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import br.com.teste.controledevendas.data.handler.ErrorType
-import br.com.teste.controledevendas.data.local.entity.OrderEntity
-import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
-import br.com.teste.controledevendas.data.local.entity.ProductEntity
 import br.com.teste.controledevendas.design.component.DefaultAppBar
 import br.com.teste.controledevendas.design.theme.MarginPaddingSizeMedium
 import br.com.teste.controledevendas.design.theme.TextSizeLarge
@@ -38,7 +35,6 @@ import br.com.teste.controledevendas.order.mapper.FakeData.fakeProductList
 import br.com.teste.controledevendas.order.mapper.OrderWithProductsDto
 import br.com.teste.controledevendas.order.mapper.ProductDto
 import org.koin.androidx.compose.getViewModel
-import java.util.*
 
 @Composable
 fun OrderDetailScreen(
@@ -126,6 +122,7 @@ fun OrderDetailContent(
                         }
                     )
                 },
+                subTitleMaxLines = 1,
                 navigationIcon = {
                     IconButton(onClick = { onBackButtonClick() }) {
                         Icon(Icons.Filled.ArrowBack,null)

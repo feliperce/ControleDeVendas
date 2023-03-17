@@ -3,7 +3,6 @@ package br.com.teste.controledevendas.order.feature.detail.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.teste.controledevendas.data.handler.Resource
-import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
 import br.com.teste.controledevendas.order.feature.detail.repository.OrderDetailRepositoryImpl
 import br.com.teste.controledevendas.order.feature.detail.state.OrderDetailIntent
 import br.com.teste.controledevendas.order.feature.detail.state.OrderDetailUiState

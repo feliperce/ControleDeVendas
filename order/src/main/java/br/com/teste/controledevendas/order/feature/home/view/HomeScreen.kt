@@ -61,7 +61,7 @@ fun HomeScreen(
             navController.navigate("order/detail/${it.id}")
         },
         onAddOrderClick = {
-
+            navController.navigate("order/add")
         },
         orderList = homeUiState.orderWithProductsList,
         showProgress = homeUiState.loading,

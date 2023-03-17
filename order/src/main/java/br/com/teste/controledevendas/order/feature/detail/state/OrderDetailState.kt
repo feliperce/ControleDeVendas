@@ -1,7 +1,6 @@
 package br.com.teste.controledevendas.order.feature.detail.state
 
 import br.com.teste.controledevendas.data.handler.ErrorType
-import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
 import br.com.teste.controledevendas.order.mapper.OrderWithProductsDto
 
 data class OrderDetailUiState (
