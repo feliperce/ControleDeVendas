@@ -3,7 +3,9 @@ package br.com.teste.controledevendas.order.feature.addorder.view
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -33,6 +35,7 @@ import br.com.teste.controledevendas.design.theme.Green200
 import br.com.teste.controledevendas.design.theme.MarginPaddingSizeMedium
 import br.com.teste.controledevendas.design.theme.TextSizeSmall
 import br.com.teste.controledevendas.order.R
+import br.com.teste.controledevendas.order.feature.addorder.extensions.sumTotal
 import br.com.teste.controledevendas.order.feature.addorder.model.FormData
 import br.com.teste.controledevendas.order.feature.addorder.state.AddOrderIntent
 import br.com.teste.controledevendas.order.feature.addorder.viewmodel.AddOrderViewModel
@@ -138,7 +141,9 @@ fun AddOrderContent(
             }
 
             Column(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
             ) {
                 AddOrderForm(
                     onAddProductClick = onAddProductClick,
@@ -230,7 +235,7 @@ fun ProductItem(formData: FormData) {
                     append(stringResource(id = R.string.sale_detail_total))
                 }
                 append(
-                    stringResource(id = R.string.sale_detail_total_result, "10540.32")
+                    stringResource(id = R.string.sale_detail_total_result, formData.sumTotal())
                 )
             }
         )
@@ -242,17 +247,15 @@ fun ProductItemList(
     formDataList: List<FormData>,
     onAddProductButtonClick: () -> Unit
 ) {
-    LazyColumn() {
-        item {
-            Button(
-                onClick = { onAddProductButtonClick() }
-            ) {
-                Text(
-                    text = stringResource(id = R.string.add_order_product_button)
-                )
-            }
+    Column() {
+        Button(
+            onClick = { onAddProductButtonClick() }
+        ) {
+            Text(
+                text = stringResource(id = R.string.add_order_product_button)
+            )
         }
-        items(formDataList) {
+        formDataList.forEach {
             ProductItem(formData = it)
             Divider(color = Color.Black, thickness = 1.dp)
         }

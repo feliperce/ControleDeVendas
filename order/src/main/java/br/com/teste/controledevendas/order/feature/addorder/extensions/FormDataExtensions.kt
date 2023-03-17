@@ -10,3 +10,8 @@ fun List<FormData>.sumAllProducts() =
         }
     }.getOrDefault(0.0)
 
+fun FormData.sumTotal() =
+    runCatching {
+        this.price.toDouble() * this.qt.toInt()
+    }.getOrDefault(0.0)
+
