@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="screen_title">Controle de Vendas</string>
+    <string name="screen_subtitle">Total de vendas: R$ %s</string>
+
+    <string name="home_order_item_order">Pedido: #%s</string>
+    <string name="home_order_item_client">Cliente: %s</string>
+
+    <string name="home_error_generic">Erro ao retornar seus pedidos, tente novamente mais tarde</string>
+
+    <string name="home_created_at">Criado em: %s</string>
+
+    <!-- Detail -->
+    <string name="sale_detail_title">Pedido: #%s</string>
+    <string name="sale_detail_client">Cliente: %s</string>
+    <string name="sale_detail_qt">Quantidade: \u0020</string>
+    <string name="sale_detail_qt_unity">%s (R$ %s unidade)</string>
+    <string name="sale_detail_total">Total: \u0020</string>
+    <string name="sale_detail_total_result">R$ %s</string>
+    <string name="sale_detail_product">Produtos:</string>
+
+    <string name="sale_detail_remove_dialog_title">Deseja remover este pedido?</string>
+    <string name="sale_detail_remove_positive_button">sim</string>
+    <string name="sale_detail_remove_negative_button">não</string>
+
+    <string name="order_detail_error_generic">Erro ao retornar o detalhe do pedido, tente novamente mais tarde</string>
+    <string name="order_detail_empty">Não foram encontradas informações sobre este pedido</string>
+
+    <string name="order_detail_removal">Pedido removido com sucesso!</string>
+
+    <!-- Add Order -->
+    <string name="add_order_form_invalid">Campos informados são inválidos</string>
+    <string name="add_order_title">Registrar novo pedido</string>
+    <string name="add_order_subtitle">Total do pedido: R$ %s</string>
+
+    <string name="add_order_client_tf">Nome do cliente</string>
+    <string name="add_order_product_expandable">Produtos (total: %s)</string>
+    <string name="add_order_product_button">Adicionar produto</string>
+
+    <string name="add_order_save_dialog_title">Deseja reigstrar este pedido?</string>
+    <string name="add_order_save_positive_button">sim</string>
+    <string name="add_order_save_negative_button">não</string>
+
+    <string name="add_order_add_dialog_title">Adicionar produto</string>
+    <string name="add_order_add_dialog_positive_button">adicionar</string>
+    <string name="add_order_add_dialog_negative_button">cancelar</string>
+    <string name="add_order_add_dialog_msg">* São campos obrigatórios.\nÉ obrigatorio definir um preço e quantidade acima de 0</string>
+    <string name="add_order_add_dialog_name_tf">Nome *</string>
+    <string name="add_order_add_dialog_desc_tf">Descrição</string>
+    <string name="add_order_add_dialog_qt_tf">Quantidade *</string>
+    <string name="add_order_add_dialog_price_tf">Preço *</string>
+    <string name="add_order_add_dialog_name_tf_error">Precisa informar o nome do produto</string>
+    <string name="add_order_add_dialog_qt_error">Precisa informar a quantidade do produto</string>
+    <string name="add_order_add_dialog_price_error">Precisa informar o preço do produto</string>
+
+    <string name="add_order_save_client_name_error">Precisa informar o nome do cliente</string>
+    <string name="add_order_save_product_error">Precisa adicionar pelo menos 1 produto</string>
+
+    <string name="add_order_added">Pedido adicionado com sucesso!</string>
+
+</resources>
