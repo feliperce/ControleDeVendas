@@ -15,4 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "Controle de Vendas"
 include(":app", ":data")
 include(":design")
-include(":home")
+include(":order")

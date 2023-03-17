@@ -10,8 +10,8 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import br.com.teste.controledevendas.home.feature.detail.view.OrderDetailScreen
-import br.com.teste.controledevendas.home.feature.home.view.HomeScreen
+import br.com.teste.controledevendas.order.feature.detail.view.OrderDetailScreen
+import br.com.teste.controledevendas.order.feature.home.view.HomeScreen
 
 
 @Composable

@@ -1,32 +1,28 @@
-import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
-
 plugins {
-    id("com.android.application")
+    id("com.android.library")
     id("org.jetbrains.kotlin.android")
     kotlin("kapt")
 }
 
 android {
-    namespace = Config.namespace
+    namespace = Config.getNameSpaceByModuleName("order")
     compileSdk = Config.compileSdk
 
     defaultConfig {
-        applicationId = Config.namespace
         minSdk = Config.minSdk
         targetSdk = Config.targetSdk
-        versionCode = Config.versionCode
-        versionName = Config.versionName
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        vectorDrawables {
-            useSupportLibrary = true
-        }
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
         }
     }
     compileOptions {
@@ -89,7 +85,5 @@ dependencies {
     implementation(Dependencies.Androidx.Room.ktx)
 
     implementation(project(":design"))
-    implementation(project(":order"))
     implementation(project(":data"))
-
 }

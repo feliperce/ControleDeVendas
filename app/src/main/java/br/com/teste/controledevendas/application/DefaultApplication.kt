@@ -2,8 +2,8 @@ package br.com.teste.controledevendas.application
 
 import android.app.Application
 import br.com.teste.controledevendas.data.di.dataModule
-import br.com.teste.controledevendas.home.feature.detail.di.orderDetailModule
-import br.com.teste.controledevendas.home.feature.home.di.homeModule
+import br.com.teste.controledevendas.order.feature.detail.di.orderDetailModule
+import br.com.teste.controledevendas.order.feature.home.di.homeModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 
