@@ -72,6 +72,8 @@ dependencies {
     implementation(Dependencies.Androidx.Compose.activity)
     implementation(Dependencies.Androidx.Compose.constraint)
 
+    implementation(Dependencies.Androidx.Navigation.compose)
+
     // Koin
     implementation(Dependencies.Koin.koin)
     implementation(Dependencies.Koin.compose)

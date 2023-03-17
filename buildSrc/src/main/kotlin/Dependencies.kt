@@ -31,6 +31,10 @@ object Dependencies {
             const val compiler = "androidx.room:room-compiler:${Versions.room}"
             const val ktx = "androidx.room:room-ktx:${Versions.room}"
         }
+
+        object Navigation {
+            const val compose = "androidx.navigation:navigation-compose:${Versions.composeNav}"
+        }
     }
 
     object Junit {

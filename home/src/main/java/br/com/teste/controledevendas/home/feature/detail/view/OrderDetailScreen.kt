@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -17,6 +18,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import br.com.teste.controledevendas.data.handler.ErrorType
 import br.com.teste.controledevendas.data.local.entity.OrderEntity
 import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
@@ -24,6 +27,7 @@ import br.com.teste.controledevendas.data.local.entity.ProductEntity
 import br.com.teste.controledevendas.design.component.DefaultAppBar
 import br.com.teste.controledevendas.design.theme.MarginPaddingSizeMedium
 import br.com.teste.controledevendas.design.theme.TextSizeLarge
+import br.com.teste.controledevendas.design.theme.TextSizeSmall
 import br.com.teste.controledevendas.home.R
 import br.com.teste.controledevendas.home.feature.detail.state.OrderDetailIntent
 import br.com.teste.controledevendas.home.feature.detail.viewmodel.OrderDetailViewModel
@@ -32,6 +36,7 @@ import java.util.*
 
 @Composable
 fun OrderDetailScreen(
+    navController: NavHostController = rememberNavController(),
     orderDetailViewModel: OrderDetailViewModel = getViewModel(),
     orderId: Long
 ) {
@@ -58,6 +63,9 @@ fun OrderDetailScreen(
             order = it,
             onRemoveButtonClick = {
 
+            },
+            onBackButtonClick = {
+                navController.popBackStack()
             }
         )
     } ?: run {
@@ -75,7 +83,8 @@ fun OrderDetailContent(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     showProgress: Boolean,
     order: OrderWithProducts,
-    onRemoveButtonClick: (orderWithProducts: OrderWithProducts) -> Unit
+    onRemoveButtonClick: (orderWithProducts: OrderWithProducts) -> Unit,
+    onBackButtonClick: () -> Unit
 ) {
 
     var openRemoveDialogState by mutableStateOf(false)
@@ -100,6 +109,11 @@ fun OrderDetailContent(
                             openRemoveDialogState = true
                         }
                     )
+                },
+                navigationIcon = {
+                    IconButton(onClick = { onBackButtonClick() }) {
+                        Icon(Icons.Filled.ArrowBack,null)
+                    }
                 }
             )
         },
@@ -132,9 +146,13 @@ fun ProductItem(product: ProductEntity) {
         Text(
             text = product.name
         )
-        Text(
-            text = product.description
-        )
+        CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.disabled) {
+            Text(
+                text = product.description,
+                fontSize = TextSizeSmall
+            )
+        }
+
         Text(modifier = Modifier
             .padding(top = MarginPaddingSizeMedium)
             .fillMaxWidth(),
@@ -251,7 +269,8 @@ fun OrderDetailContentPreview() {
     OrderDetailContent(
         showProgress = true,
         order = fakeOrderWithProductsList[0],
-        onRemoveButtonClick = {}
+        onRemoveButtonClick = {},
+        onBackButtonClick = {}
     )
 }
 
