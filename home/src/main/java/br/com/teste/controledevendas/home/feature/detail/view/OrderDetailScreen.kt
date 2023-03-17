@@ -63,6 +63,7 @@ fun OrderDetailScreen(
 
     if (orderDetailUiState.isRemoved) {
         Toast.makeText(context, R.string.order_detail_removal, Toast.LENGTH_LONG).show()
+        orderDetailUiState.isRemoved = false
         navController.popBackStack()
     }
 
