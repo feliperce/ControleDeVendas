@@ -51,6 +51,7 @@ class AddOrderViewModel(
     ) {
         if (validateForm(formData)) {
             _orderDetailState.update {
+                it.formDataList.add(formData)
                 it.copy(
                     error = ErrorType.NONE
                 )

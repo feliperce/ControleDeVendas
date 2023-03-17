@@ -1,7 +1,5 @@
 package br.com.teste.controledevendas.order.feature.addorder.view
 
-import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -70,6 +68,7 @@ fun AddOrderScreen(
     }
 
     AddOrderContent(
+        scaffoldState = scaffoldState,
         showProgress = orderDetailUiState.loading,
         onSaveButtonClick = { orderWithProducts ->
 
@@ -81,7 +80,8 @@ fun AddOrderScreen(
             addOrderViewModel.sendIntent(
                 AddOrderIntent.ValidateForm(it)
             )
-        }
+        },
+        formDataList = orderDetailUiState.formDataList
     )
 }
 
@@ -89,6 +89,7 @@ fun AddOrderScreen(
 fun AddOrderContent(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
     showProgress: Boolean,
+    formDataList: List<FormData>,
     onSaveButtonClick: (orderWithProducts: OrderWithProducts) -> Unit,
     onBackButtonClick: () -> Unit,
     onAddProductClick: (formData: FormData) -> Unit
@@ -137,7 +138,8 @@ fun AddOrderContent(
                 modifier = Modifier.fillMaxSize()
             ) {
                 AddOrderForm(
-                    onAddProductClick = onAddProductClick
+                    onAddProductClick = onAddProductClick,
+                    formDataList = formDataList
                 )
             }
         }
@@ -146,11 +148,11 @@ fun AddOrderContent(
 
 @Composable
 fun AddOrderForm(
-    onAddProductClick: (formData: FormData) -> Unit
+    onAddProductClick: (formData: FormData) -> Unit,
+    formDataList: List<FormData>
 ) {
 
     var clientText by remember { mutableStateOf("") }
-    var productList by remember { mutableStateOf(listOf<ProductDto>()) }
     var showAddProductDialog by remember { mutableStateOf(false) }
 
     if (showAddProductDialog) {
@@ -178,11 +180,11 @@ fun AddOrderForm(
         
         ExpandableItem(
             modifier = Modifier.padding(top = MarginPaddingSizeMedium),
-            title = stringResource(id = R.string.add_order_product_expandable, productList.size),
+            title = stringResource(id = R.string.add_order_product_expandable, formDataList.size),
             backgroundColor = Green200
         ) {
             ProductItemList(
-                productList = productList,
+                formDataList = formDataList,
                 onAddProductButtonClick = {
                     showAddProductDialog = true
                 }
@@ -192,16 +194,16 @@ fun AddOrderForm(
 }
 
 @Composable
-fun ProductItem(product: ProductDto) {
+fun ProductItem(formData: FormData) {
     Column(
         modifier = Modifier.padding(MarginPaddingSizeMedium)
     ) {
         Text(
-            text = product.name
+            text = formData.name
         )
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.disabled) {
             Text(
-                text = product.description,
+                text = formData.description,
                 fontSize = TextSizeSmall
             )
         }
@@ -214,7 +216,7 @@ fun ProductItem(product: ProductDto) {
                     append(stringResource(id = R.string.sale_detail_qt))
                 }
                 append(
-                    stringResource(id = R.string.sale_detail_qt_unity, product.qt, product.price)
+                    stringResource(id = R.string.sale_detail_qt_unity, formData.qt, formData.price)
                 )
             }
         )
@@ -234,7 +236,7 @@ fun ProductItem(product: ProductDto) {
 
 @Composable
 fun ProductItemList(
-    productList: List<ProductDto>,
+    formDataList: List<FormData>,
     onAddProductButtonClick: () -> Unit
 ) {
     LazyColumn() {
@@ -247,8 +249,8 @@ fun ProductItemList(
                 )
             }
         }
-        items(productList) {
-            ProductItem(product = it)
+        items(formDataList) {
+            ProductItem(formData = it)
             Divider(color = Color.Black, thickness = 1.dp)
         }
     }
@@ -337,7 +339,6 @@ private fun AddProductDialog(
                             qt = qtText,
                             price = priceText
                         )
-
                     )
                     onDismiss()
                 }
@@ -431,19 +432,22 @@ private fun AddProductDialog(
 @Composable
 @Preview(showBackground = true)
 fun ProductItemPreview() {
-    ProductItem(FakeData.fakeProductList[0])
+    ProductItem(fakeFormDataList[0])
 }
 
 @Composable
 @Preview(showBackground = true)
 fun ProductItemListPreview() {
-    ProductItemList(FakeData.fakeProductList, {})
+    ProductItemList(fakeFormDataList, {})
 }
 
 @Composable
 @Preview(showBackground = true)
 fun AddOrderFormPreview() {
-    AddOrderForm { }
+    AddOrderForm(
+        onAddProductClick = {},
+        formDataList = fakeFormDataList
+    )
 }
 
 /*@Composable
@@ -475,3 +479,17 @@ fun AddProductDialogPreview() {
         onDismiss = {}
     )
 }
+
+private val fakeFormData = FormData(
+    name = "Nameee",
+    description = "descrrr",
+    qt = "5",
+    price = "1423"
+)
+
+private val fakeFormDataList = listOf<FormData>(
+    fakeFormData,
+    fakeFormData,
+    fakeFormData,
+    fakeFormData
+)
