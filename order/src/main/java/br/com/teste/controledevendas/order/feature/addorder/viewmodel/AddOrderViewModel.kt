@@ -3,7 +3,7 @@ package br.com.teste.controledevendas.order.feature.addorder.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.teste.controledevendas.data.handler.ErrorType
-import br.com.teste.controledevendas.order.R
+import br.com.teste.controledevendas.data.handler.Resource
 import br.com.teste.controledevendas.order.feature.addorder.extensions.sumAllProducts
 import br.com.teste.controledevendas.order.feature.addorder.model.FormData
 import br.com.teste.controledevendas.order.feature.addorder.repository.AddOrderRepositoryImpl
@@ -19,8 +19,8 @@ class AddOrderViewModel(
 
     private val intentChannel = Channel<AddOrderIntent>(Channel.UNLIMITED)
 
-    private val _orderDetailState = MutableStateFlow(AddOrderUiState(loading = false))
-    val orderDetailState: StateFlow<AddOrderUiState> = _orderDetailState.asStateFlow()
+    private val _addOrderState = MutableStateFlow(AddOrderUiState(loading = false))
+    val addOrderState: StateFlow<AddOrderUiState> = _addOrderState.asStateFlow()
 
     init {
         handleIntents()
@@ -40,18 +40,44 @@ class AddOrderViewModel(
                     is AddOrderIntent.ValidateForm -> {
                         valiteFormAndUpdateUi(formData = intent.formData)
                     }
-                    is AddOrderIntent.AddOrderWithProducts -> {
-
+                    is AddOrderIntent.AddOrder -> {
+                        addOrder(intent.clientName)
                     }
                 }
             }.launchIn(viewModelScope)
+    }
+
+    private fun addOrder(clientName: String) {
+        viewModelScope.launch {
+            addOrderRepositoryImpl.insertOrderWithProducts(
+                clientName, _addOrderState.value.formDataList
+            ).collect { res ->
+                when (res) {
+                    is Resource.Success -> {
+                        _addOrderState.update {
+                            it.copy(isAdded = true)
+                        }
+                    }
+                    is Resource.Loading -> {
+                        _addOrderState.update {
+                            it.copy(loading = it.loading)
+                        }
+                    }
+                    is Resource.Error -> {
+                        _addOrderState.update {
+                            it.copy(error = it.error)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun valiteFormAndUpdateUi(
         formData: FormData
     ) {
         if (validateForm(formData)) {
-            _orderDetailState.update {
+            _addOrderState.update {
                 it.formDataList.add(formData)
                 it.copy(
                     error = ErrorType.NONE,
@@ -59,7 +85,7 @@ class AddOrderViewModel(
                 )
             }
         } else {
-            _orderDetailState.update {
+            _addOrderState.update {
                 it.copy(
                     error = ErrorType.INVALID_FORM
                 )

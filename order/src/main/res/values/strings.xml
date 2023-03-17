@@ -51,4 +51,9 @@
     <string name="add_order_add_dialog_qt_error">Precisa informar a quantidade do produto</string>
     <string name="add_order_add_dialog_price_error">Precisa informar o preço do produto</string>
 
+    <string name="add_order_save_client_name_error">Precisa informar o nome do cliente</string>
+    <string name="add_order_save_product_error">Precisa adicionar pelo menos 1 produto</string>
+
+    <string name="add_order_added">Pedido adicionado com sucesso!</string>
+
 </resources>

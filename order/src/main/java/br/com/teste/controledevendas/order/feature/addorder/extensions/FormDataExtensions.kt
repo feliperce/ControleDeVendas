@@ -15,3 +15,4 @@ fun FormData.sumTotal() =
         this.price.toDouble() * this.qt.toInt()
     }.getOrDefault(0.0)
 
+

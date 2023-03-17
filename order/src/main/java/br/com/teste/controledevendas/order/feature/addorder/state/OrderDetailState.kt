@@ -10,10 +10,11 @@ data class AddOrderUiState (
     var error: ErrorType = ErrorType.NONE,
     val orderWithProducts: OrderWithProductsDto? = null,
     val formDataList: ArrayList<FormData> = arrayListOf(),
-    var orderTotal: Double = 0.0
+    var orderTotal: Double = 0.0,
+    var isAdded: Boolean = false
 )
 
 sealed class AddOrderIntent {
-    class AddOrderWithProducts(val orderWithProducts: OrderWithProductsDto): AddOrderIntent()
+    class AddOrder(val clientName: String): AddOrderIntent()
     class ValidateForm(val formData: FormData): AddOrderIntent()
 }

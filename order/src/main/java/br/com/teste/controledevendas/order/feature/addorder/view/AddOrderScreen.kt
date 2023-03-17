@@ -1,8 +1,7 @@
 package br.com.teste.controledevendas.order.feature.addorder.view
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -29,7 +28,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import br.com.teste.controledevendas.commons.extensions.toMoneyString
 import br.com.teste.controledevendas.data.handler.ErrorType
-import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
 import br.com.teste.controledevendas.design.component.DefaultAppBar
 import br.com.teste.controledevendas.design.component.ExpandableItem
 import br.com.teste.controledevendas.design.theme.Green200
@@ -40,9 +38,6 @@ import br.com.teste.controledevendas.order.feature.addorder.extensions.sumTotal
 import br.com.teste.controledevendas.order.feature.addorder.model.FormData
 import br.com.teste.controledevendas.order.feature.addorder.state.AddOrderIntent
 import br.com.teste.controledevendas.order.feature.addorder.viewmodel.AddOrderViewModel
-import br.com.teste.controledevendas.order.mapper.FakeData
-import br.com.teste.controledevendas.order.mapper.OrderWithProductsDto
-import br.com.teste.controledevendas.order.mapper.ProductDto
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -54,9 +49,9 @@ fun AddOrderScreen(
     val context = LocalContext.current
 
     val scaffoldState = rememberScaffoldState()
-    val orderDetailUiState by addOrderViewModel.orderDetailState.collectAsState()
+    val addOrderUiState by addOrderViewModel.addOrderState.collectAsState()
 
-    orderDetailUiState.error.let { error ->
+    addOrderUiState.error.let { error ->
         if (error != ErrorType.NONE) {
             val errorMsg = if (error == ErrorType.INVALID_FORM) {
                 stringResource(id = R.string.add_order_form_invalid)
@@ -66,16 +61,24 @@ fun AddOrderScreen(
 
             LaunchedEffect(Unit) {
                 scaffoldState.snackbarHostState.showSnackbar(message = errorMsg)
-                orderDetailUiState.error = ErrorType.NONE
+                addOrderUiState.error = ErrorType.NONE
             }
         }
     }
 
+    if (addOrderUiState.isAdded) {
+        Toast.makeText(context, R.string.add_order_added, Toast.LENGTH_LONG).show()
+        addOrderUiState.isAdded = false
+        navController.popBackStack()
+    }
+
     AddOrderContent(
         scaffoldState = scaffoldState,
-        showProgress = orderDetailUiState.loading,
-        onSaveButtonClick = { orderWithProducts ->
-
+        showProgress = addOrderUiState.loading,
+        onSaveButtonClick = { clientName ->
+            addOrderViewModel.sendIntent(
+                AddOrderIntent.AddOrder(clientName)
+            )
         },
         onBackButtonClick = {
             navController.popBackStack()
@@ -85,8 +88,8 @@ fun AddOrderScreen(
                 AddOrderIntent.ValidateForm(it)
             )
         },
-        formDataList = orderDetailUiState.formDataList,
-        orderTotal = orderDetailUiState.orderTotal
+        formDataList = addOrderUiState.formDataList,
+        orderTotal = addOrderUiState.orderTotal
     )
 }
 
@@ -96,19 +99,21 @@ fun AddOrderContent(
     showProgress: Boolean,
     formDataList: List<FormData>,
     orderTotal: Double,
-    onSaveButtonClick: (orderWithProducts: OrderWithProducts) -> Unit,
+    onSaveButtonClick: (clientName: String) -> Unit,
     onBackButtonClick: () -> Unit,
     onAddProductClick: (formData: FormData) -> Unit,
 ) {
 
+    var clientText by remember { mutableStateOf("") }
     var onSaveDialogState by remember { mutableStateOf(false) }
 
     if (onSaveDialogState) {
-        /*SaveDialog(
+        SaveDialog(
             onDismiss = { onSaveDialogState = false },
-            orderWithProducts = order,
-            onSaveButtonClick = onSaveButtonClick
-        )*/
+            onPositiveButtonClick = {
+                onSaveButtonClick(clientText)
+            }
+        )
     }
 
     Scaffold(
@@ -146,6 +151,19 @@ fun AddOrderContent(
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
             ) {
+                TextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = MarginPaddingSizeMedium),
+                    value = clientText,
+                    onValueChange = { clientText = it },
+                    label = {
+                        Text(
+                            text = stringResource(id = R.string.add_order_client_tf)
+                        )
+                    }
+                )
+
                 AddOrderForm(
                     onAddProductClick = onAddProductClick,
                     formDataList = formDataList
@@ -161,7 +179,7 @@ fun AddOrderForm(
     formDataList: List<FormData>
 ) {
 
-    var clientText by remember { mutableStateOf("") }
+
     var showAddProductDialog by remember { mutableStateOf(false) }
 
     if (showAddProductDialog) {
@@ -174,18 +192,7 @@ fun AddOrderForm(
     Column(
         modifier = Modifier.padding(MarginPaddingSizeMedium)
     ) {
-        TextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = MarginPaddingSizeMedium),
-            value = clientText,
-            onValueChange = { clientText = it },
-            label = {
-                Text(
-                    text = stringResource(id = R.string.add_order_client_tf)
-                )
-            }
-        )
+
         
         ExpandableItem(
             modifier = Modifier.padding(top = MarginPaddingSizeMedium),
@@ -284,8 +291,7 @@ fun TopMenu(
 @Composable
 fun SaveDialog(
     onDismiss: () -> Unit,
-    orderWithProducts: OrderWithProductsDto,
-    onSaveButtonClick: (orderWithProducts: OrderWithProductsDto) -> Unit
+    onPositiveButtonClick: () -> Unit
 ) {
 
     AlertDialog(
@@ -293,7 +299,7 @@ fun SaveDialog(
         confirmButton = {
             TextButton(
                 onClick = {
-                    onSaveButtonClick(orderWithProducts)
+                    onPositiveButtonClick()
                     onDismiss()
                 },
                 content = {
@@ -473,8 +479,7 @@ fun OrderDetailContentPreview() {
 fun RemoveDialogPreview() {
     SaveDialog(
         onDismiss = {  },
-        orderWithProducts = FakeData.fakeOrderWithProductsList[0],
-        onSaveButtonClick = {}
+        onPositiveButtonClick = {}
     )
 }
 
