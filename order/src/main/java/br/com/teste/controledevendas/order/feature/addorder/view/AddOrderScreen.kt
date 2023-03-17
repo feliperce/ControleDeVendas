@@ -38,6 +38,7 @@ import br.com.teste.controledevendas.order.feature.addorder.extensions.sumTotal
 import br.com.teste.controledevendas.order.feature.addorder.model.FormData
 import br.com.teste.controledevendas.order.feature.addorder.state.AddOrderIntent
 import br.com.teste.controledevendas.order.feature.addorder.viewmodel.AddOrderViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.getViewModel
 
 @Composable
@@ -47,6 +48,8 @@ fun AddOrderScreen(
 ) {
 
     val context = LocalContext.current
+
+    val coroutineScope = rememberCoroutineScope()
 
     val scaffoldState = rememberScaffoldState()
     val addOrderUiState by addOrderViewModel.addOrderState.collectAsState()
@@ -68,7 +71,7 @@ fun AddOrderScreen(
                 }
             }
 
-            LaunchedEffect(addOrderUiState.error) {
+            coroutineScope.launch {
                 scaffoldState.snackbarHostState.showSnackbar(message = errorMsg)
                 addOrderUiState.error = ErrorType.NONE
             }
@@ -85,9 +88,6 @@ fun AddOrderScreen(
         scaffoldState = scaffoldState,
         showProgress = addOrderUiState.loading,
         onSaveButtonClick = { clientName ->
-            addOrderViewModel.sendIntent(
-                AddOrderIntent.ValidateOrder(clientName)
-            )
             addOrderViewModel.sendIntent(
                 AddOrderIntent.AddOrder(clientName)
             )
@@ -166,7 +166,7 @@ fun AddOrderContent(
                 TextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = MarginPaddingSizeMedium),
+                        .padding(MarginPaddingSizeMedium),
                     value = clientText,
                     onValueChange = { clientText = it },
                     label = {
@@ -244,7 +244,7 @@ fun ProductItem(formData: FormData) {
                     append(stringResource(id = R.string.sale_detail_qt))
                 }
                 append(
-                    stringResource(id = R.string.sale_detail_qt_unity, formData.qt, formData.price)
+                    stringResource(id = R.string.sale_detail_qt_unity, formData.qt, formData.price.toDouble().toMoneyString())
                 )
             }
         )

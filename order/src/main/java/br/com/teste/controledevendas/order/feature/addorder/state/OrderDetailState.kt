@@ -15,7 +15,6 @@ data class AddOrderUiState (
 )
 
 sealed class AddOrderIntent {
-    class ValidateOrder(val clientName: String): AddOrderIntent()
     class AddOrder(val clientName: String): AddOrderIntent()
     class ValidateForm(val formData: FormData): AddOrderIntent()
 }
