@@ -6,10 +6,11 @@ import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
 data class OrderDetailUiState (
     val loading: Boolean = false,
     var error: ErrorType = ErrorType.NONE,
-    val orderWithProducts: OrderWithProducts? = null
+    val orderWithProducts: OrderWithProducts? = null,
+    var isRemoved: Boolean = false
 )
 
 sealed class OrderDetailIntent {
     class GetAllOrdersWithProductsByOrderId(val orderId: Long): OrderDetailIntent()
-    class RemoveOrderWithProductsByOrderId(val orderId: Long): OrderDetailIntent()
+    class RemoveOrderWithProducts(val orderWithProducts: OrderWithProducts): OrderDetailIntent()
 }

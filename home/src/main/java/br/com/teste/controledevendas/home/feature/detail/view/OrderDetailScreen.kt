@@ -1,5 +1,6 @@
 package br.com.teste.controledevendas.home.feature.detail.view
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -11,6 +12,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -41,6 +43,8 @@ fun OrderDetailScreen(
     orderId: Long
 ) {
 
+    val context = LocalContext.current
+
     val scaffoldState = rememberScaffoldState()
     val orderDetailUiState by orderDetailViewModel.orderDetailState.collectAsState()
 
@@ -57,13 +61,18 @@ fun OrderDetailScreen(
         }
     }
 
+    if (orderDetailUiState.isRemoved) {
+        Toast.makeText(context, R.string.order_detail_removal, Toast.LENGTH_LONG).show()
+        navController.popBackStack()
+    }
+
     orderDetailUiState.orderWithProducts?.let {
         OrderDetailContent(
             showProgress = orderDetailUiState.loading,
             order = it,
             onRemoveButtonClick = { orderWithProducts ->
                 orderDetailViewModel.sendIntent(
-                    OrderDetailIntent.RemoveOrderWithProductsByOrderId(orderWithProducts.order.id)
+                    OrderDetailIntent.RemoveOrderWithProducts(orderWithProducts)
                 )
             },
             onBackButtonClick = {
@@ -89,7 +98,7 @@ fun OrderDetailContent(
     onBackButtonClick: () -> Unit
 ) {
 
-    var openRemoveDialogState by mutableStateOf(false)
+    var openRemoveDialogState by remember { mutableStateOf(false) }
 
     if (openRemoveDialogState) {
         RemoveDialog(

@@ -24,8 +24,9 @@ class OrderDetailRepositoryImpl(
             emit(Resource.Error(error = ErrorType.GENERIC))
         }
 
-    override fun removeOrderWithProductsByOrderId(orderId: Long) = flow<Resource<Unit>> {
+    override fun removeOrderWithProducts(orderWithProducts: OrderWithProducts) = flow<Resource<Unit>> {
+        orderDao.deleteOrderWithProducts(orderWithProducts.order, orderWithProducts.products)
         emit(Resource.Success(Unit))
-    }
+    }.flowOn(Dispatchers.IO)
 
 }

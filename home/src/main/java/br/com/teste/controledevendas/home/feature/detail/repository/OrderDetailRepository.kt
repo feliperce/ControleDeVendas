@@ -8,6 +8,6 @@ interface OrderDetailRepository {
 
     fun getOrderWithProductsByOrderId(orderId: Long): Flow<Resource<OrderWithProducts>>
 
-    fun removeOrderWithProductsByOrderId(orderId: Long): Flow<Resource<Unit>>
+    fun removeOrderWithProducts(orderWithProducts: OrderWithProducts): Flow<Resource<Unit>>
 
 }

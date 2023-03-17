@@ -3,6 +3,7 @@ package br.com.teste.controledevendas.home.feature.detail.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import br.com.teste.controledevendas.data.handler.Resource
+import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
 import br.com.teste.controledevendas.home.feature.detail.repository.OrderDetailRepositoryImpl
 import br.com.teste.controledevendas.home.feature.detail.state.OrderDetailIntent
 import br.com.teste.controledevendas.home.feature.detail.state.OrderDetailUiState
@@ -37,8 +38,8 @@ class OrderDetailViewModel(
                     is OrderDetailIntent.GetAllOrdersWithProductsByOrderId -> {
                         getAllOrdersWithProducts(intent.orderId)
                     }
-                    is OrderDetailIntent.RemoveOrderWithProductsByOrderId -> {
-
+                    is OrderDetailIntent.RemoveOrderWithProducts -> {
+                        removeOrderWithProducts(intent.orderWithProducts)
                     }
                 }
             }.launchIn(viewModelScope)
@@ -53,6 +54,30 @@ class OrderDetailViewModel(
                             it.copy(
                                 orderWithProducts = res.data
                             )
+                        }
+                    }
+                    is Resource.Loading -> {
+                        _orderDetailState.update {
+                            it.copy(loading = it.loading)
+                        }
+                    }
+                    is Resource.Error -> {
+                        _orderDetailState.update {
+                            it.copy(error = it.error)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun removeOrderWithProducts(orderWithProducts: OrderWithProducts) {
+        viewModelScope.launch {
+            orderDetailRepositoryImpl.removeOrderWithProducts(orderWithProducts).collect { res ->
+                when (res) {
+                    is Resource.Success -> {
+                        _orderDetailState.update {
+                            it.copy(isRemoved = true)
                         }
                     }
                     is Resource.Loading -> {
