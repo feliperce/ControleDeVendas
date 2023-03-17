@@ -14,3 +14,6 @@ fun List<OrderWithProductsDto>.sumAllSales() =
     this.sumOf { sale ->
         sale.productDtoList.sumAllProducts()
     }
+
+fun ProductDto.sumAll() =
+    this.price * this.qt

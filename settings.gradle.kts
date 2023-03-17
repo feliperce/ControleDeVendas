@@ -16,3 +16,4 @@ rootProject.name = "Controle de Vendas"
 include(":app", ":data")
 include(":design")
 include(":order")
+include(":commons")

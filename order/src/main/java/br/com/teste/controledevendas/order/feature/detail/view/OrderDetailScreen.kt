@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import br.com.teste.controledevendas.commons.extensions.toMoneyString
 import br.com.teste.controledevendas.data.handler.ErrorType
 import br.com.teste.controledevendas.design.component.DefaultAppBar
 import br.com.teste.controledevendas.design.theme.MarginPaddingSizeMedium
@@ -30,6 +31,7 @@ import br.com.teste.controledevendas.design.theme.TextSizeSmall
 import br.com.teste.controledevendas.order.R
 import br.com.teste.controledevendas.order.feature.detail.state.OrderDetailIntent
 import br.com.teste.controledevendas.order.feature.detail.viewmodel.OrderDetailViewModel
+import br.com.teste.controledevendas.order.feature.home.extensions.sumAll
 import br.com.teste.controledevendas.order.mapper.FakeData.fakeOrderWithProductsList
 import br.com.teste.controledevendas.order.mapper.FakeData.fakeProductList
 import br.com.teste.controledevendas.order.mapper.OrderWithProductsDto
@@ -185,7 +187,7 @@ fun ProductItem(product: ProductDto) {
                     append(stringResource(id = R.string.sale_detail_total))
                 }
                 append(
-                    stringResource(id = R.string.sale_detail_total_result, "10540.32")
+                    stringResource(id = R.string.sale_detail_total_result, product.sumAll().toMoneyString())
                 )
             }
         )

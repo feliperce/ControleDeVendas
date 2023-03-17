@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import br.com.teste.controledevendas.commons.extensions.toMoneyString
 import br.com.teste.controledevendas.data.handler.ErrorType
 import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
 import br.com.teste.controledevendas.design.component.DefaultAppBar
@@ -115,7 +116,7 @@ fun AddOrderContent(
         topBar = {
             DefaultAppBar(
                 title = stringResource(id = R.string.add_order_title),
-                subTitle = stringResource(id = R.string.add_order_subtitle, orderTotal),
+                subTitle = stringResource(id = R.string.add_order_subtitle, orderTotal.toMoneyString()),
                 actions = {
                     TopMenu(
                         onSaveButtonClick = {
@@ -235,7 +236,7 @@ fun ProductItem(formData: FormData) {
                     append(stringResource(id = R.string.sale_detail_total))
                 }
                 append(
-                    stringResource(id = R.string.sale_detail_total_result, formData.sumTotal())
+                    stringResource(id = R.string.sale_detail_total_result, formData.sumTotal().toMoneyString())
                 )
             }
         )

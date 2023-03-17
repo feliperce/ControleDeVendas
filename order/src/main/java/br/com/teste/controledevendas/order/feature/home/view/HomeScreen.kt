@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import br.com.teste.controledevendas.commons.extensions.toMoneyString
 import br.com.teste.controledevendas.data.handler.ErrorType
 import br.com.teste.controledevendas.data.local.entity.OrderEntity
 import br.com.teste.controledevendas.data.local.entity.OrderWithProducts
@@ -85,7 +86,7 @@ fun OrderContent(
         topBar = {
             DefaultAppBar(
                 title = stringResource(id = R.string.screen_title),
-                subTitle = stringResource(id = R.string.screen_subtitle, totalSales)
+                subTitle = stringResource(id = R.string.screen_subtitle, totalSales.toMoneyString())
             )
         },
         content = {
